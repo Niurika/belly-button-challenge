@@ -42,15 +42,18 @@
 // function that contains instructions at page load/refresh
 // function does not run until called
 
+const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
+   
+data = d3.json(url);
 
 
 function init(){
     // code that runs once (only on page load or refresh)
     
-    const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
+//    const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
    
     
-    data = d3.json(url);
+//     data = d3.jso n(url);
 
    
    
@@ -67,7 +70,8 @@ function init(){
             .attr('value', option.text)
             .text(option.text);
             
-        }})
+        }
+    })
         
         //     data.then(data => {data.names
         //         optionMenu.append("option")
@@ -98,10 +102,11 @@ function init(){
         
    
     // run functions to generate plots
-    createScatter('940')
-    createBar('940')
+    // createScatter('940')
+    // createBar('940')
     createSummary('940')
-  
+    createChart
+    ('940')
  }
 
 
@@ -112,57 +117,128 @@ function optionChanged(newID){
     console.log(newID);
     // code that updates graphics
     // one way is to recall each function
-    createScatter(newID)
-    createBar(newID)
     createSummary(newID)
+    createChart(newID)
 
 }
 
-function createScatter(id){
-   
-   
-   
-    // code that makes scatter plot at id='bubble'
+function createSummary(id){
+    d3.json("https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json").then((data) => {  
+
+        let metadata = data.metadata;
+        console.log("metadata")
+
+        console.log(metadata)
+        let resultArray = metadata.filter(sampleObj => sampleObj.id == id);
+        let result = resultArray[0];
+
+        let box = d3.select("#sample-metadata");
+
+        box.html("");
+
+        Object.entries(result).forEach(([key, value]) => {
+            box.append("h6").text(`${key.toUpperCase()}: ${value}`);
+          });
+
+    })    
     
-    let otu_ids = []
-    let sample_values = []
-    //let names = []
-    data.then(data => {data.samples
-    for (let i = 0; i < data.samples.length; i++) {
-        row = data.samples[i];
-        // names.push(row.pair);
-        otu_ids.push(row.otu_ids);
-        sample_values.push(row.sample_values);
+}
+
+function createChart(id){
+    d3.json("https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json").then((data) => {  
+
+        let samples = data.samples;
         
-    }})
+        let resultArray = samples.filter(sampleObj => sampleObj.id == id);
+        let result = resultArray[0];
+   
+        let otu_ids = result.otu_ids;
+        let otu_labels = result.otu_labels;
+        let sample_values = result.sample_values;
+
+        let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
+        let barData = [
+        {
+            y: yticks,
+            x: sample_values.slice(0, 10).reverse(),
+            text: otu_labels.slice(0, 10).reverse(),
+            type: "bar",
+            orientation: "h",
+        }
+        ];
+
+        let barLayout = {
+        title: "Top 10 Bacteria Cultures Found",
+        margin: { t: 30, l: 150 }
+        };
+
+        Plotly.newPlot("bar", barData, barLayout);
+
+        let bubbleLayout = {
+            title: "Bacteria Cultures Per Sample",
+            margin: { t: 0 },
+            hovermode: "closest",
+            xaxis: { title: "OTU ID" },
+            margin: { t: 30}
+          };
+          let bubbleData = [
+            {
+              x: otu_ids,
+              y: sample_values,
+              text: otu_labels,
+              mode: "markers",
+              marker: {
+                size: sample_values,
+                color: otu_ids,
+                colorscale: "Earth"
+              }
+            }
+          ];
+      
+          Plotly.newPlot("bubble", bubbleData, bubbleLayout);
+  });
+}
+//     // code that makes scatter plot at id='bubble'
+    
+//     let otu_ids = []
+//     let sample_values = []
+//     //let names = []
+//     data.then(data => {data.samples
+//     for (let i = 0; i < data.samples.length; i++) {
+//         row = data.samples[i];
+//         // names.push(row.pair);
+//         otu_ids.push(row.otu_ids);
+//         sample_values.push(row.sample_values);
+        
+//     }})
       
     
     
-      let trace1 = {
-            x: otu_ids,
-            y: sample_values,
-          type: 'bubble'
-        };
+//       let trace1 = {
+//             x: otu_ids,
+//             y: sample_values,
+//           type: 'bubble'
+//         };
         
-        let data_scatter = [trace1];
+//         let data_scatter = [trace1];
         
         
         
-        Plotly.newPlot('bubble', data_scatter);
+//         Plotly.newPlot('bubble', data_scatter);
     
     
     
     
     
-    // var optionMenu = d3.select("#bubble")
-    // data.then(data => {data.samples
-    //     for (let i = 0; i < data.samples.length; i++) { 
-    //         option = document.createElement('option');
-    //         option.text = data.samples[id];
-    //         optionMenu.append("option")
-    //         .attr('value', option.text)
-    //         .text(option.text);
-    //     }}) 
+//     // var optionMenu = d3.select("#bubble")
+//     // data.then(data => {data.samples
+//     //     for (let i = 0; i < data.samples.length; i++) { 
+//     //         option = document.createElement('option');
+//     //         option.text = data.samples[id];
+//     //         optionMenu.append("option")
+//     //         .attr('value', option.text)
+//     //         .text(option.text);
+//     //     }}) 
 
    
   
@@ -172,28 +248,28 @@ function createScatter(id){
    
    
    
-        // checking to see if function is running
-    console.log(`This function generates scatter plot of ${id} `)
-}
+//         // checking to see if function is running
+//     console.log(`This function generates scatter plot of ${id} `)
+// }
 
-function createBar(id){
-    // code that makes bar chart at id='bar'
+// function createBar(id){
+//     // code that makes bar chart at id='bar'
 
-    // checking to see if function is running
-    console.log(`This function generates bar chart of ${id} `)
+//     // checking to see if function is running
+//     console.log(`This function generates bar chart of ${id} `)
 
-}
+// }
 
-function createSummary(id){
-    // code that makes list, paragraph, text/linebreaks at id='sample-meta'
+// function createSummary(id){
+//     // code that makes list, paragraph, text/linebreaks at id='sample-meta'
 
-    // checking to see if function is running
-    console.log(`This function generates summary info of ${id} `)
-}
+//     // checking to see if function is running
+//     console.log(`This function generates summary info of ${id} `)
+// }
 
 
-// function called, runs init instructions
-// runs only on load and refresh of browser page
+// // function called, runs init instructions
+// // runs only on load and refresh of browser page
 init()
 
 
