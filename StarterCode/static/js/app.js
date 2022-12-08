@@ -50,12 +50,6 @@ data = d3.json(url);
 function init(){
     // code that runs once (only on page load or refresh)
     
-//    const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
-   
-    
-//     data = d3.jso n(url);
-
-   
    
     // this checks that our initial function runs.
     console.log("The Init() function ran")
@@ -73,40 +67,12 @@ function init(){
         }
     })
         
-        //     data.then(data => {data.names
-        //         optionMenu.append("option")
-        //         .attr('value', data)
-        //         .text();
-               
-                
-            
-            
-        //  });
-        
-        
-        
-        
-        // };
-    
-        // .on('change', () => update(newID))
-        // .selectAll('option')
-        // .data(dataPromise.names)
-        // .enter()s
-        // //.append('select')
-        // .attr('value', dataPromise )
-        // .text('940');
-
-
-     
-        
-        
-   
+ 
     // run functions to generate plots
     // createScatter('940')
     // createBar('940')
     createSummary('940')
-    createChart
-    ('940')
+    createChart('940')
  }
 
 
@@ -122,9 +88,15 @@ function optionChanged(newID){
 
 }
 
+// code that makes list, paragraph, text/linebreaks at id='sample-meta'
+
+
+
 function createSummary(id){
     d3.json("https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json").then((data) => {  
-
+       
+        console.log(`This function generates summary info of ${id} `)
+        
         let metadata = data.metadata;
         console.log("metadata")
 
@@ -148,6 +120,10 @@ function createChart(id){
     d3.json("https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json").then((data) => {  
 
         let samples = data.samples;
+
+    // code that makes bar chart at id='bar'
+
+        console.log(`This function generates bar chart of ${id} `)
         
         let resultArray = samples.filter(sampleObj => sampleObj.id == id);
         let result = resultArray[0];
@@ -174,6 +150,10 @@ function createChart(id){
 
         Plotly.newPlot("bar", barData, barLayout);
 
+     // code that makes scatter plot at id='bubble' 
+     
+        console.log(`This function generates scatter plot of ${id} `)
+        
         let bubbleLayout = {
             title: "Bacteria Cultures Per Sample",
             margin: { t: 0 },
@@ -198,7 +178,10 @@ function createChart(id){
           Plotly.newPlot("bubble", bubbleData, bubbleLayout);
   });
 }
-//     // code that makes scatter plot at id='bubble'
+
+
+
+// bubble 
     
 //     let otu_ids = []
 //     let sample_values = []
@@ -241,32 +224,6 @@ function createChart(id){
 //     //     }}) 
 
    
-  
-   
-   
-   
-   
-   
-   
-//         // checking to see if function is running
-//     console.log(`This function generates scatter plot of ${id} `)
-// }
-
-// function createBar(id){
-//     // code that makes bar chart at id='bar'
-
-//     // checking to see if function is running
-//     console.log(`This function generates bar chart of ${id} `)
-
-// }
-
-// function createSummary(id){
-//     // code that makes list, paragraph, text/linebreaks at id='sample-meta'
-
-//     // checking to see if function is running
-//     console.log(`This function generates summary info of ${id} `)
-// }
-
 
 // // function called, runs init instructions
 // // runs only on load and refresh of browser page
