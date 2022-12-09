@@ -179,54 +179,6 @@ function createChart(id){
   });
 }
 
-
-
-// bubble 
-    
-//     let otu_ids = []
-//     let sample_values = []
-//     //let names = []
-//     data.then(data => {data.samples
-//     for (let i = 0; i < data.samples.length; i++) {
-//         row = data.samples[i];
-//         // names.push(row.pair);
-//         otu_ids.push(row.otu_ids);
-//         sample_values.push(row.sample_values);
-        
-//     }})
-      
-    
-    
-//       let trace1 = {
-//             x: otu_ids,
-//             y: sample_values,
-//           type: 'bubble'
-//         };
-        
-//         let data_scatter = [trace1];
-        
-        
-        
-//         Plotly.newPlot('bubble', data_scatter);
-    
-    
-    
-    
-    
-//     // var optionMenu = d3.select("#bubble")
-//     // data.then(data => {data.samples
-//     //     for (let i = 0; i < data.samples.length; i++) { 
-//     //         option = document.createElement('option');
-//     //         option.text = data.samples[id];
-//     //         optionMenu.append("option")
-//     //         .attr('value', option.text)
-//     //         .text(option.text);
-//     //     }}) 
-
-   
-
-// // function called, runs init instructions
-// // runs only on load and refresh of browser page
 init()
 
 
